@@ -1,3 +1,4 @@
+// Gets the remote url by scope
 export const getRemoteUrlFromEnv = (scope: string): string => {
   if (!process.env.remotes) {
     throw new Error('[getRemoteUrlFromEnv] remotes env not found')

@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+// This custom hook makes sure remote url are online before importing components
+import { useEffect, useState } from "react";
 
 type TUseRemoteUrl = {
   url?: string;
   rerunKey?: number;
 };
-export const useRemoteUrl = ({ url, rerunKey}: TUseRemoteUrl): { isReady: boolean; isFailed: boolean } => {
+export const useRemoteUrl = ({
+  url,
+  rerunKey,
+}: TUseRemoteUrl): { isReady: boolean; isFailed: boolean } => {
   const [isReady, setIsReady] = useState(false);
   const [isFailed, setIsFailed] = useState(false);
   useEffect(() => {
@@ -12,10 +16,10 @@ export const useRemoteUrl = ({ url, rerunKey}: TUseRemoteUrl): { isReady: boolea
       return;
     }
 
-    const script = document.createElement('script');
+    const script = document.createElement("script");
 
     script.src = url;
-    script.type = 'text/javascript';
+    script.type = "text/javascript";
     script.async = true;
 
     setIsReady(false);

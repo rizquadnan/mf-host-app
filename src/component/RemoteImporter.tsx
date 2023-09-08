@@ -1,3 +1,10 @@
+// Always use remote urls through this component
+// This component handles:
+// 1. failed to load remote app
+// 2. loading state
+// 3. error state
+// 4. mapping scope with remote url
+
 import dynamic, { DynamicOptionsLoadingProps } from "next/dynamic";
 import React, { useState } from "react";
 

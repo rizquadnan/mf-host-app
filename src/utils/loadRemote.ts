@@ -1,3 +1,4 @@
+// Helper function to handle module federation remote loading
 const loadScope = (url: string, scope: string) => {
   const element = document.createElement("script");
   const promise = new Promise((resolve, reject) => {
@@ -13,7 +14,11 @@ const loadScope = (url: string, scope: string) => {
   return promise;
 };
 
-export const loadModule = async (url: string, scope: string, module: string) => {
+export const loadModule = async (
+  url: string,
+  scope: string,
+  module: string
+) => {
   try {
     const container = await loadScope(url, scope);
     // @ts-ignore
