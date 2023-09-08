@@ -35,7 +35,16 @@ export default function Home() {
           <RemoteLoader
             remote={{
               scope: "remote-one",
-              module: "./ComponentThatError",
+              module: "./ComponentWithRenderError",
+            }}
+          />
+        </div>
+        <div>
+          <h2>Remote Component That Has Handler Error - From remote-one</h2>
+          <RemoteLoader
+            remote={{
+              scope: "remote-one",
+              module: "./ComponentWithHandlerError",
             }}
           />
         </div>
