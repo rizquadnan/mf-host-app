@@ -1,7 +1,7 @@
 const { NextFederationPlugin } = require("@module-federation/nextjs-mf");
 
 const REMOTE_ONE_URL =
-  process.env.NEXT_PUBLIC_REMOTE_ONE_URL || "http://localhost:3001";
+  process.env.REMOTE_ONE_URL || "http://localhost:3001";
 
 const remotes = () => {
   return {
