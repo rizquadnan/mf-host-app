@@ -10,14 +10,14 @@ type TRemote = {
   module: string;
 };
 
-type TRemoteLoader = {
+type TRemoteImporter = {
   remote: TRemote;
   loadingComponent?:
     | ((loadingProps: DynamicOptionsLoadingProps) => JSX.Element | null)
     | undefined;
   errorComponent?: React.ReactNode;
 };
-export const RemoteLoader = (props: TRemoteLoader) => {
+export const RemoteImporter = (props: TRemoteImporter) => {
   const remoteUrl = getRemoteUrlFromEnv(props.remote.scope);
 
   const { isReady, isFailed } = useRemoteUrl(remoteUrl);

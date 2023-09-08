@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 
 import HostAppTitle from '@/component/HostAppTitle'
-import { RemoteLoader } from '@/component/RemoteLoader';
+import { RemoteImporter } from '@/component/RemoteImporter';
 
 const inter = Inter({ subsets: ['latin'] })
 import { Space, Typography } from 'antd';
@@ -28,7 +28,7 @@ export default function Home() {
           </div>
           <div>
             <Title level={2}>Remote Component - From remote-one</Title>
-            <RemoteLoader
+            <RemoteImporter
               remote={{
                 scope: "remote-one",
                 module: "./RemoteOneTitle",
@@ -39,7 +39,7 @@ export default function Home() {
             <Title level={2}>
               Remote Component That Has Render Error - From remote-one
             </Title>
-            <RemoteLoader
+            <RemoteImporter
               remote={{
                 scope: "remote-one",
                 module: "./ComponentWithRenderError",
@@ -50,7 +50,7 @@ export default function Home() {
             <Title level={2}>
               Remote Component That Has Handler Error - From remote-one
             </Title>
-            <RemoteLoader
+            <RemoteImporter
               remote={{
                 scope: "remote-one",
                 module: "./ComponentWithHandlerError",
