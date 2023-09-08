@@ -1,0 +1,17 @@
+.wrapper {
+  background-color: black;
+  color: white;
+  padding: 0 52px;
+}
+
+.list {
+  list-style-type: none;
+}
+
+.list > *:not(:last-child) {
+  margin-right: 8px;
+}
+
+.listItem {
+  display: inline-block;
+}

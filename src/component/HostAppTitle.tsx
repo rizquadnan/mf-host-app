@@ -1,8 +1,7 @@
 import React from 'react'
-
 const HostAppTitle = () => {
   return (
-    <div>Hello from host app!</div>
+    <p>Hello from host app!</p>
   )
 }
 
