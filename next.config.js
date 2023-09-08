@@ -1,11 +1,15 @@
 const { NextFederationPlugin } = require("@module-federation/nextjs-mf");
 
+// on dev can set to localhost
+// on deployment make sure to set the remotes deployment urls
 const REMOTE_ONE_URL =
   process.env.REMOTE_ONE_URL || "http://localhost:3001";
+const REMOTE_TWO_URL = process.env.REMOTE_TWO_URL || "http://localhost:3002";
 
 const remotes = () => {
   return {
     "remote-one": `${REMOTE_ONE_URL}/_next/static/chunks/remoteEntry.js`,
+    "remote-two": `${REMOTE_TWO_URL}/_next/static/chunks/remoteEntry.js`,
   };
 };
 
