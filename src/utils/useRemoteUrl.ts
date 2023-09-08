@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 
-export const useRemoteUrl = (url?: string): { isReady: boolean; isFailed: boolean } => {
+type TUseRemoteUrl = {
+  url?: string;
+  rerunKey?: number;
+};
+export const useRemoteUrl = ({ url, rerunKey}: TUseRemoteUrl): { isReady: boolean; isFailed: boolean } => {
   const [isReady, setIsReady] = useState(false);
   const [isFailed, setIsFailed] = useState(false);
   useEffect(() => {
@@ -34,7 +38,7 @@ export const useRemoteUrl = (url?: string): { isReady: boolean; isFailed: boolea
       console.log(` [useRemoteUrl] Dynamic Script Removed: ${url}`);
       document.head.removeChild(script);
     };
-  }, [url]);
+  }, [url, rerunKey]);
 
   return {
     isReady,

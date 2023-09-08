@@ -1,31 +1,45 @@
 import dynamic, { DynamicOptionsLoadingProps } from "next/dynamic";
-import React from "react";
+import React, { useState } from "react";
 
 import { useRemoteUrl } from "@/utils/useRemoteUrl";
 import { loadModule } from "@/utils/loadRemote";
 import { getRemoteUrlFromEnv } from "@/utils/getRemoteUrlFromEnv";
+import { Button, Space } from "antd";
 
 type TRemote = {
   scope: string;
   module: string;
 };
 
+type TErrorComponent = {
+  reload: () => void
+}
+
 type TRemoteImporter = {
   remote: TRemote;
   loadingComponent?:
     | ((loadingProps: DynamicOptionsLoadingProps) => JSX.Element | null)
     | undefined;
-  errorComponent?: React.ReactNode;
+  errorComponent?: (props: TErrorComponent) => React.ReactNode;
 };
 export const RemoteImporter = (props: TRemoteImporter) => {
+  const [remoteKey, setRemoteKey] = useState(0)
+
   const remoteUrl = getRemoteUrlFromEnv(props.remote.scope);
 
-  const { isReady, isFailed } = useRemoteUrl(remoteUrl);
+  const { isReady, isFailed } = useRemoteUrl({ url: remoteUrl, rerunKey: remoteKey });
+
+  const handleReloadComponent = () => setRemoteKey(prev => prev + 1)
 
   if (isFailed) {
     return (
-      props.errorComponent ?? (
-        <p>Something went wrong loading the remote file</p>
+      props.errorComponent ? props.errorComponent({ reload: handleReloadComponent }) : (
+        <Space direction="vertical">
+          <p>Something went wrong loading the remote file</p>
+          <Button onClick={handleReloadComponent}>
+            Click here to try reload
+          </Button>
+        </Space>
       )
     );
   }
@@ -45,5 +59,5 @@ export const RemoteImporter = (props: TRemoteImporter) => {
     }
   );
 
-  return <RemoteComponent />;
+  return <RemoteComponent key={remoteKey} />;
 };
