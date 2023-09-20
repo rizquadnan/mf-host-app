@@ -1,4 +1,4 @@
-import { RemoteImporter } from "@/component/RemoteImporter";
+import { RemoteImporter } from "@/components/RemoteImporter";
 import { Space, Typography } from "antd";
 import { useRouter } from "next/router";
 import React from "react";

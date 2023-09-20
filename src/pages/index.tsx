@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 
-import HostAppTitle from '@/component/HostAppTitle'
-import { RemoteImporter } from '@/component/RemoteImporter';
+import HostAppTitle from '@/components/HostAppTitle'
+import { RemoteImporter } from '@/components/RemoteImporter';
 
 const inter = Inter({ subsets: ['latin'] })
 import { Space, Typography } from 'antd';

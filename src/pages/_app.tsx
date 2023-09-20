@@ -6,8 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 const { Header, Footer, Content } = Layout;
 
 import '@/styles/globals.css'
-import { Navbar } from "@/component/Navbar";
-import { FooterContent } from "@/component/FooterContent";
+import { Navbar } from "@/components/Navbar";
+import { FooterContent } from "@/components/FooterContent";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <AntdApp>
