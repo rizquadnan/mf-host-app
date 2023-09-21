@@ -1,30 +1,64 @@
-import { Layout, App as AntdApp } from "antd";
 import type { AppProps } from "next/app";
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
+import { NextPage } from "next";
+import Head from "next/head";
+import { ReactElement, ReactNode } from "react";
 
-const { Header, Footer, Content } = Layout;
-
+import { Protected, RedirectIfDoneAuth } from "@/features/auth";
 import '@/styles/globals.css'
-import { Navbar } from "@/components/Navbar";
-import { FooterContent } from "@/components/FooterContent";
-export default function App({ Component, pageProps }: AppProps) {
+
+type NextPageExtended = NextPage & {
+  withLayout?: (page: ReactElement) => ReactNode;
+  isProtected?: boolean;
+  redirectIfDoneAuth?: boolean;
+};
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageExtended;
+};
+function App({ Component, pageProps }: AppPropsWithLayout) {
+  const withLayout = Component.withLayout ?? ((page) => page);
+  const isProtected = Component.isProtected ?? false;
+  const redirectIfDoneAuth = Component.redirectIfDoneAuth ?? false;
+
+  const pageContent = withLayout(<Component {...pageProps} />);
+
   return (
-    <AntdApp>
-      <Layout
-        style={{ background: "transparent", minHeight: "100vh" }}
-        className={inter.className}
-      >
-        <Header style={{ background: "transparent", padding: "0px" }}>
-          <Navbar />
-        </Header>
-        <Content style={{ background: "transparent", padding: "24px 50px" }}>
-          <Component {...pageProps} />
-        </Content>
-        <Footer style={{ background: "transparent", padding: "0px" }}>
-          <FooterContent />
-        </Footer>
-      </Layout>
-    </AntdApp>
+    <>
+      <Head>
+        <title>Microfrontend Host App</title>
+        <meta name="description" content="Proof of concept for Next.js microfrontend" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <>
+        {isProtected ? (
+          <Protected>{pageContent}</Protected>
+        ) : redirectIfDoneAuth ? (
+          <RedirectIfDoneAuth>{pageContent}</RedirectIfDoneAuth>
+        ) : (
+          pageContent
+        )}
+      </>
+    </>
   );
 }
+
+// App.getInitialProps = async ({ Component, ctx }: any) => {
+//   let pageProps = { profile: {} };
+//   let { token } = parseCookies(ctx);
+
+//   if (!token) {
+//     destroyCookie(ctx, "token");
+//   } else {
+//     const res = await axios.get(`${process.env.API_SOURCE}/profiles`, {
+//       withCredentials: true,
+//       headers: { Cookie: `token=${token}` },
+//     });
+//     pageProps.profile = await res.data?.data;
+//     if (Component.getServerSideProps) {
+//       pageProps = await Component.getServerSideProps(ctx);
+//     }
+//   }
+//   return { pageProps };
+// };
+
+export default App;

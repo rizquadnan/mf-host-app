@@ -6,6 +6,8 @@ import { RemoteImporter } from '@/components/RemoteImporter';
 
 const inter = Inter({ subsets: ['latin'] })
 import { Space, Typography } from 'antd';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import { ReactElement } from 'react';
 const { Title } = Typography;
 export default function Home() {
   return (
@@ -91,3 +93,7 @@ export default function Home() {
     </>
   );
 }
+
+Home.withLayout = (page: ReactElement) => {
+  return <AuthenticatedLayout>{page}</AuthenticatedLayout>;
+};
