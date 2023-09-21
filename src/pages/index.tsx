@@ -1,99 +1,77 @@
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
+import { login } from '@/features/auth';
+import NotAuthenticatedLayout from '@/layouts/NotAuthenticatedLayout'
+import { Button, Checkbox, Form, Input, Space } from 'antd';
+import { useRouter } from 'next/router';
+import React, { ReactElement } from 'react'
 
-import HostAppTitle from '@/components/HostAppTitle'
-import { RemoteImporter } from '@/components/RemoteImporter';
+type FieldType = {
+  email: string;
+  password: string;
+};
 
-const inter = Inter({ subsets: ['latin'] })
-import { Space, Typography } from 'antd';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-import { ReactElement } from 'react';
-const { Title } = Typography;
-export default function Home() {
+function Index() {
+  const router = useRouter()
+  const onSubmit = async (args: FieldType) => {
+    try {
+      await login(args);
+      router.push("/dashboard");
+    } catch (error) {
+      alert("Failed to login");
+    }
+  };
   return (
-    <>
-      <Head>
-        <title>NextJS Microfrontend</title>
-        <meta
-          name="description"
-          content="Proof of concept of microfrontend using Next.js"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={`${inter.className}`}>
-        <Space direction="vertical" size="middle">
-          <Title>NextJs Microfrontend</Title>
-          <div>
-            <Title level={2}>Local Component</Title>
-            <HostAppTitle />
-          </div>
-          <Space direction="vertical" size="middle">
-            <Title level={2}>Remote Components From remote-one</Title>
-            <div>
-              <Title level={3}>Title</Title>
-              <RemoteImporter
-                remote={{
-                  scope: "remote-one",
-                  module: "./RemoteOneTitle",
-                }}
-              />
-            </div>
-            <div>
-              <Title level={3}>Remote Component That Has Render Error</Title>
-              <RemoteImporter
-                remote={{
-                  scope: "remote-one",
-                  module: "./ComponentWithRenderError",
-                }}
-              />
-            </div>
-            <div>
-              <Title level={3}>Remote Component That Has Handler Error</Title>
-              <RemoteImporter
-                remote={{
-                  scope: "remote-one",
-                  module: "./ComponentWithHandlerError",
-                }}
-              />
-            </div>
-          </Space>
-          <Space direction='vertical' size="middle">
-            <Title level={2}>Remote Components From remote-two</Title>
-            <div>
-              <Title level={3}>Title</Title>
-              <RemoteImporter
-                remote={{
-                  scope: "remote-two",
-                  module: "./RemoteTwoTitle",
-                }}
-              />
-            </div>
-            <div>
-              <Title level={3}>Remote Component That Has Render Error</Title>
-              <RemoteImporter
-                remote={{
-                  scope: "remote-two",
-                  module: "./ComponentWithRenderError",
-                }}
-              />
-            </div>
-            <div>
-              <Title level={3}>Remote Component That Has Handler Error</Title>
-              <RemoteImporter
-                remote={{
-                  scope: "remote-two",
-                  module: "./ComponentWithHandlerError",
-                }}
-              />
-            </div>
-          </Space>
-        </Space>
-      </main>
-    </>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: "25vh",
+      }}
+    >
+      <Space direction="vertical">
+        <h1>Sign in to your account</h1>
+        <Form
+          style={{ width: "100%", maxWidth: "450px" }}
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onSubmit}
+          onFinishFailed={() => {}}
+          autoComplete="off"
+          layout="vertical"
+        >
+          <Form.Item<FieldType>
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Please input your username!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item<FieldType>
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Space>
+    </div>
   );
 }
 
-Home.withLayout = (page: ReactElement) => {
-  return <AuthenticatedLayout>{page}</AuthenticatedLayout>;
-};
+Index.withLayout = (page: ReactElement) => {
+  return (
+    <NotAuthenticatedLayout>
+      {page}
+    </NotAuthenticatedLayout>
+  );
+}
+
+export default Index

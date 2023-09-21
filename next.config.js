@@ -6,6 +6,8 @@ const REMOTE_ONE_URL =
   process.env.REMOTE_ONE_URL || "http://localhost:3001";
 const REMOTE_TWO_URL = process.env.REMOTE_TWO_URL || "http://localhost:3002";
 
+const API_SOURCE = process.env.API_SOURCE || "http://localhost:8888"
+
 const remotes = () => {
   return {
     "remote-one": `${REMOTE_ONE_URL}/_next/static/chunks/remoteEntry.js`,
@@ -29,6 +31,15 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     remotes: remotes(),
+    API_SOURCE
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${API_SOURCE}/:path*`,
+      },
+    ];
   },
   /**
    *

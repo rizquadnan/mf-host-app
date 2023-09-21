@@ -2,7 +2,19 @@ import React from 'react'
 
 import styles from "./Navbar.module.css"
 import Link from 'next/link';
+import { Button } from 'antd';
+import { logout } from '@/features/auth';
+import { useRouter } from 'next/router';
 export const Navbar = () => {
+  const router = useRouter()
+  const onLogout = async () => {
+    try {
+      await logout()
+      router.push("/")
+    } catch (error) {
+      alert("Failed to logout")
+    }
+  }
   return (
     <div className={styles.wrapper}>
       <ul className={styles.list}>
@@ -29,7 +41,15 @@ export const Navbar = () => {
             DynamicPageTest/remote-two/two
           </Link>
         </li>
+        <li className={styles.listItem}>
+          <Link href="/remote-two-components/two">
+            DynamicPageTest/remote-two/two
+          </Link>
+        </li>
       </ul>
+      <Button onClick={onLogout}>
+        Logout
+      </Button>
     </div>
   );
 }

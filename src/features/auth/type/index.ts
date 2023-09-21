@@ -1,11 +1,11 @@
 export type TLoginRequest = {
-  nik: string;
+  email: string;
   password: string;
 };
 
 export type TLoginResponse = {
-  data: TUser;
-};
+  message: string
+}
 
 export type TGetCurrentUserRequest = {
   token: string;
@@ -35,21 +35,20 @@ export type TGetCurrentUserResponse = {
 };
 
 export type TRegisterRequest = {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
+  passwordConfirm: string;
 };
 
-export type TRegisterResponse = {
-  user: TUser;
-};
+export type TRegisterResponse = TUser;
 
 export type TUser = {
-  user_id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  nik: string;
-  system_role_id: number;
+  id: number
 };
 
 // Forgot Password
