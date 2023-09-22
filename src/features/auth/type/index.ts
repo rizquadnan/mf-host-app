@@ -7,32 +7,7 @@ export type TLoginResponse = {
   message: string
 }
 
-export type TGetCurrentUserRequest = {
-  token: string;
-};
-
-export type TGetCurrentUserResponse = {
-  data: {
-    id: string;
-    nik: string;
-    system_role_id: number;
-    name: string;
-    email: string;
-    phone: string;
-    departement: string;
-    jabatan: string;
-    status: number;
-    site_location: string;
-    image_profile: string;
-    role_system: {
-      id: number;
-      name: string;
-      level: number;
-    };
-    created_at: string;
-    updated_at: string;
-  };
-};
+export type TGetCurrentUserResponse = TUser
 
 export type TRegisterRequest = {
   firstName: string;

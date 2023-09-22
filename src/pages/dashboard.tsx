@@ -97,3 +97,5 @@ export default function Home() {
 Home.withLayout = (page: ReactElement) => {
   return <AuthenticatedLayout>{page}</AuthenticatedLayout>;
 };
+
+Home.isProtected = true;

@@ -19,6 +19,8 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   const isProtected = Component.isProtected ?? false;
   const redirectIfDoneAuth = Component.redirectIfDoneAuth ?? false;
 
+  console.log('isProtected', isProtected)
+
   const pageContent = withLayout(<Component {...pageProps} />);
 
   return (
@@ -33,7 +35,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         {isProtected ? (
           <Protected>{pageContent}</Protected>
         ) : redirectIfDoneAuth ? (
-          <RedirectIfDoneAuth>{pageContent}</RedirectIfDoneAuth>
+          <RedirectIfDoneAuth authorizedRedirectUrl="/dashboard">{pageContent}</RedirectIfDoneAuth>
         ) : (
           pageContent
         )}

@@ -1,6 +1,8 @@
 import { login } from '@/features/auth';
 import NotAuthenticatedLayout from '@/layouts/NotAuthenticatedLayout'
+import { useAuthStore } from '@/stores/auth';
 import { Button, Checkbox, Form, Input, Space } from 'antd';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react'
 
@@ -10,10 +12,11 @@ type FieldType = {
 };
 
 function Index() {
+  const authStore = useAuthStore();
   const router = useRouter()
   const onSubmit = async (args: FieldType) => {
     try {
-      await login(args);
+      await authStore.doLogin(args);
       router.push("/dashboard");
     } catch (error) {
       alert("Failed to login");
@@ -30,6 +33,7 @@ function Index() {
     >
       <Space direction="vertical">
         <h1>Sign in to your account</h1>
+        <Link href="/register">No account ? Register here</Link>
         <Form
           style={{ width: "100%", maxWidth: "450px" }}
           name="basic"
@@ -73,5 +77,7 @@ Index.withLayout = (page: ReactElement) => {
     </NotAuthenticatedLayout>
   );
 }
+
+Index.redirectIfDoneAuth = true
 
 export default Index

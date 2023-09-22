@@ -1,12 +1,8 @@
 import { axiosInstance } from "@/lib";
-import { TGetCurrentUserRequest, TGetCurrentUserResponse } from "../type";
+import { TGetCurrentUserResponse } from "../type";
 
-// export const getCurrentUser = () => {
-//   return axiosInstance.get<TGetCurrentUserResponse>("/user");
-// };
-export const getCurrentUser = (props: TGetCurrentUserRequest) => {
-  return axiosInstance.get<TGetCurrentUserResponse>("/profiles", {
+export const getCurrentUser = () => {
+  return axiosInstance.get<TGetCurrentUserResponse>("/api/user", {
     withCredentials: true,
-    headers: { Cookie: `token=${props?.token}` },
   });
 };

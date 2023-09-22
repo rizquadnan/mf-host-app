@@ -17,6 +17,7 @@ export const Protected = (props: TProtected) => {
   useEffect(() => {
     if (!router || !authStore) return;
 
+    console.log("getAuthStatus(authStore)", getAuthStatus(authStore));
     if (getAuthStatus(authStore) === "not-authenticated") {
       router.push(props.notAuthorizedRedirectUrl ?? "/login");
     }

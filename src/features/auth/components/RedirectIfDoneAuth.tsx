@@ -19,7 +19,7 @@ export const RedirectIfDoneAuth = (props: TRedirectIfAuthenticated) => {
     if (!router || !authStore) return;
 
     if (getAuthStatus(authStore) === "authenticated") {
-      // router.push(props.authorizedRedirectUrl ?? "/");
+      router.push(props.authorizedRedirectUrl ?? "/");
       return;
     }
   }, [router, authStore, props.authorizedRedirectUrl]);

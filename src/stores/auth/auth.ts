@@ -1,10 +1,4 @@
-import {
-  login,
-  forgetPassword,
-  resetPassword,
-  logout,
-  register,
-} from "@/features/auth";
+import { login, logout, register, getCurrentUser } from "@/features/auth";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { TAuthStore } from "./type";
@@ -14,53 +8,13 @@ export const useAuthStore = create<TAuthStore>()(
   persist(
     (set, get) => ({
       user: null,
-      remember: false,
-      nik: null,
-      password: null,
-      doLogin: async ({ nik, password, remember }) => {
+      doLogin: async ({ email, password }) => {
         try {
-          const res = await login({ nik, password });
+          await login({ email, password });
 
-          set(() => ({
-            remember: remember,
-          }));
+          const res = await getCurrentUser() 
 
-          if (remember) {
-            set(() => ({
-              nik: nik,
-              password: password,
-            }));
-          }
-
-          set(() => ({ user: res.data.data }));
-        } catch (error) {
-          throw error;
-        }
-
-        return;
-      },
-      doForgetPassword: async ({ email }) => {
-        try {
-          await forgetPassword({ email });
-        } catch (error) {
-          throw error;
-        }
-
-        return;
-      },
-      doResetPassword: async ({
-        email,
-        token,
-        new_password,
-        confirm_new_password,
-      }) => {
-        try {
-          await resetPassword({
-            email,
-            token,
-            new_password,
-            confirm_new_password,
-          });
+          set(() => ({ user: res.data }));
         } catch (error) {
           throw error;
         }
@@ -70,11 +24,11 @@ export const useAuthStore = create<TAuthStore>()(
       resetUser: () => {
         set(() => ({ user: null }));
       },
-      doRegister: async ({ email, password, username }) => {
+      doRegister: async ({ firstName, lastName, email, password, passwordConfirm }) => {
         try {
-          const res = await register({ email, password, username });
+          const res = await register({ firstName, lastName, email, password, passwordConfirm  });
 
-          set(() => ({ user: res.data.user }));
+          set(() => ({ user: res.data }));
         } catch (error) {
           throw error;
         }
@@ -83,12 +37,7 @@ export const useAuthStore = create<TAuthStore>()(
       },
       doLogout: async () => {
         try {
-          const res = await logout();
-          console.log(res);
-
-          if (!get().remember) {
-            set(() => ({ nik: null, password: null }));
-          }
+          await logout();
 
           set(() => ({ user: null }));
         } catch (error) {

@@ -1,6 +1,7 @@
-import { register } from "@/features/auth";
 import NotAuthenticatedLayout from "@/layouts/NotAuthenticatedLayout";
-import { Button, Checkbox, Form, Input, Space } from "antd";
+import { useAuthStore } from "@/stores/auth";
+import { Button, Form, Input, Space } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
 
@@ -13,12 +14,13 @@ type FieldType = {
 };
 
 function Register() {
+  const authStore = useAuthStore()
   const router = useRouter();
 
   const onSubmit = async (values: FieldType) => {
     try {
-      await register(values)
-      router.push("/")
+      await authStore.doRegister(values);
+      router.push("/login")
     } catch (error) {
       alert("Failed to register")
     }
@@ -35,6 +37,7 @@ function Register() {
     >
       <Space direction="vertical">
         <h1>Register a new account</h1>
+        <Link href="/login">Have an account ? Login here</Link>
         <Form
           style={{ width: "100%", maxWidth: "450px" }}
           name="basic"
@@ -66,9 +69,7 @@ function Register() {
           <Form.Item<FieldType>
             label="Email"
             name="email"
-            rules={[
-              { required: true, message: "Please input your email!" },
-            ]}
+            rules={[{ required: true, message: "Please input your email!" }]}
           >
             <Input />
           </Form.Item>
@@ -103,5 +104,7 @@ function Register() {
 Register.withLayout = (page: ReactElement) => {
   return <NotAuthenticatedLayout>{page}</NotAuthenticatedLayout>;
 };
+
+Register.redirectIfDoneAuth = true;
 
 export default Register;

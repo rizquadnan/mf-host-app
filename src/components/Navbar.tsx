@@ -3,14 +3,15 @@ import React from 'react'
 import styles from "./Navbar.module.css"
 import Link from 'next/link';
 import { Button } from 'antd';
-import { logout } from '@/features/auth';
 import { useRouter } from 'next/router';
+import { useAuthStore } from '@/stores/auth';
 export const Navbar = () => {
+  const authStore = useAuthStore()
   const router = useRouter()
   const onLogout = async () => {
     try {
-      await logout()
-      router.push("/")
+      await authStore.doLogout()
+      router.push("/login")
     } catch (error) {
       alert("Failed to logout")
     }
@@ -19,7 +20,7 @@ export const Navbar = () => {
     <div className={styles.wrapper}>
       <ul className={styles.list}>
         <li className={styles.listItem}>
-          <Link href="/">Home</Link>
+          <Link href="/dashboard">Home</Link>
         </li>
         <li className={styles.listItem}>
           <Link href="/remote-one-components/one">
