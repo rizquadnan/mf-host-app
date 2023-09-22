@@ -2,6 +2,7 @@ import { RemoteImporter } from "@/components/RemoteImporter";
 import { TUser, getCurrentUser } from "@/features/auth";
 import { hello } from "@/features/hello";
 import { THelloResponse } from "@/features/hello/type";
+import AuthenticatedLayout from "@/layouts/AuthenticatedLayout";
 import NotAuthenticatedLayout from "@/layouts/NotAuthenticatedLayout";
 import { Button, Space, Typography } from "antd";
 import React, { ReactElement, useState } from "react";
@@ -69,7 +70,9 @@ function TestAuth() {
 }
 
 TestAuth.withLayout = (page: ReactElement) => {
-  return <NotAuthenticatedLayout>{page}</NotAuthenticatedLayout>;
+  return <AuthenticatedLayout>{page}</AuthenticatedLayout>;
 };
+
+TestAuth.isProtected = true
 
 export default TestAuth;

@@ -23,6 +23,9 @@ export const Navbar = () => {
           <Link href="/dashboard">Home</Link>
         </li>
         <li className={styles.listItem}>
+          <Link href="/test-auth">Test Authenticated API Calls</Link>
+        </li>
+        <li className={styles.listItem}>
           <Link href="/remote-one-components/one">
             DynamicPageTest/remote-one/one
           </Link>
@@ -48,9 +51,7 @@ export const Navbar = () => {
           </Link>
         </li>
       </ul>
-      <Button onClick={onLogout}>
-        Logout
-      </Button>
+      <Button onClick={onLogout}>Logout</Button>
     </div>
   );
 }
