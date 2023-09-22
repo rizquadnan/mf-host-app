@@ -26,9 +26,7 @@ export const useAuthStore = create<TAuthStore>()(
       },
       doRegister: async ({ firstName, lastName, email, password, passwordConfirm }) => {
         try {
-          const res = await register({ firstName, lastName, email, password, passwordConfirm  });
-
-          set(() => ({ user: res.data }));
+          await register({ firstName, lastName, email, password, passwordConfirm  });
         } catch (error) {
           throw error;
         }

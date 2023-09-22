@@ -32,7 +32,7 @@ function Register() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: "25vh",
+        paddingTop: "10vh",
       }}
     >
       <Space direction="vertical">
@@ -83,7 +83,7 @@ function Register() {
           </Form.Item>
 
           <Form.Item<FieldType>
-            label="Password"
+            label="Confirm Password"
             name="passwordConfirm"
             rules={[{ required: true, message: "Please input your password!" }]}
           >

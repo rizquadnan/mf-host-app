@@ -31,7 +31,16 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     remotes: remotes(),
-    API_SOURCE
+    API_SOURCE,
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/dashboard",
+        permanent: false,
+      },
+    ];
   },
   async rewrites() {
     return [
