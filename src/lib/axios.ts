@@ -42,6 +42,8 @@ axiosInstance.interceptors.response.use(
     // if error happens on server side then log the error on FE server
     // if error happens on client side then show notification
     if (IS_BROWSER) {
+      console.log('masuk')
+      console.log("error?.response?.status", error?.response?.status);
       if (error?.response?.status === 401) {
         useNotificationStore.getState().getInstance().error({
           message: "Gagal melakukan otentikasi",
@@ -53,13 +55,13 @@ axiosInstance.interceptors.response.use(
         return;
       }
 
-      // useNotificationStore
-      //   .getState()
-      //   .getInstance()
-      //   .error({
-      //     message: "Terjadi kesalahan dalam memproses permintaan",
-      //     description: getShownMessage(error),
-      //   });
+      useNotificationStore
+        .getState()
+        .getInstance()
+        .error({
+          message: "Terjadi kesalahan dalam memproses permintaan",
+          description: getShownMessage(error),
+        });
     } else if (IS_SERVER) {
       console.error("[axios-interceptors]: ", error);
     }

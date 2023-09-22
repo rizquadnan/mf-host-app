@@ -6,7 +6,7 @@
 // 4. mapping scope with remote url
 
 import dynamic, { DynamicOptionsLoadingProps } from "next/dynamic";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { useRemoteUrl } from "@/utils/useRemoteUrl";
 import { loadModule } from "@/utils/loadRemote";
@@ -19,8 +19,8 @@ type TRemote = {
 };
 
 type TErrorComponent = {
-  reload: () => void
-}
+  reload: () => void;
+};
 
 type TRemoteImporter = {
   remote: TRemote;
@@ -30,41 +30,48 @@ type TRemoteImporter = {
   errorComponent?: (props: TErrorComponent) => React.ReactNode;
 };
 export const RemoteImporter = (props: TRemoteImporter) => {
-  const [remoteKey, setRemoteKey] = useState(0)
+  const [remoteKey, setRemoteKey] = useState(0);
 
   const remoteUrl = getRemoteUrlFromEnv(props.remote.scope);
 
-  const { isReady, isFailed } = useRemoteUrl({ url: remoteUrl, rerunKey: remoteKey });
+  const { isReady, isFailed } = useRemoteUrl({
+    url: remoteUrl,
+    rerunKey: remoteKey,
+  });
 
-  const handleReloadComponent = () => setRemoteKey(prev => prev + 1)
-
-  if (isFailed) {
-    return (
-      props.errorComponent ? props.errorComponent({ reload: handleReloadComponent }) : (
-        <Space direction="vertical">
-          <p>Something went wrong loading the remote file</p>
-          <Button onClick={handleReloadComponent}>
-            Click here to try reload
-          </Button>
-        </Space>
-      )
-    );
-  }
+  const handleReloadComponent = () => setRemoteKey((prev) => prev + 1);
 
   const LoadingComponent = props.loadingComponent
     ? props.loadingComponent
     : () => <div>Loading...</div>;
 
-  if (!isReady) {
+  const RemoteComponent = useMemo(() => {
+    return isReady && !isFailed
+      ? dynamic(
+          () => loadModule(remoteUrl, props.remote.scope, props.remote.module),
+          {
+            loading: LoadingComponent,
+          }
+        )
+      : null;
+  }, [remoteUrl, props.remote.scope, props.remote.module, isReady, isFailed]);
+
+  if (!isReady && !isFailed) {
     return <LoadingComponent />;
   }
 
-  const RemoteComponent = dynamic(
-    () => loadModule(remoteUrl, props.remote.scope, props.remote.module),
-    {
-      loading: LoadingComponent,
-    }
-  );
+  if (isFailed || !RemoteComponent) {
+    return props.errorComponent ? (
+      props.errorComponent({ reload: handleReloadComponent })
+    ) : (
+      <Space direction="vertical">
+        <p>Something went wrong loading the remote file</p>
+        <Button onClick={handleReloadComponent}>
+          Click here to try reload
+        </Button>
+      </Space>
+    );
+  }
 
   return <RemoteComponent key={remoteKey} />;
 };

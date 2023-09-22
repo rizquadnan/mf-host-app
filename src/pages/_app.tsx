@@ -5,6 +5,7 @@ import { ReactElement, ReactNode } from "react";
 
 import { Protected, RedirectIfDoneAuth } from "@/features/auth";
 import '@/styles/globals.css'
+import { AppProvider } from "@/providers";
 
 type NextPageExtended = NextPage & {
   withLayout?: (page: ReactElement) => ReactNode;
@@ -19,8 +20,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   const isProtected = Component.isProtected ?? false;
   const redirectIfDoneAuth = Component.redirectIfDoneAuth ?? false;
 
-  console.log('isProtected', isProtected)
-
   const pageContent = withLayout(<Component {...pageProps} />);
 
   return (
@@ -31,7 +30,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <>
+      <AppProvider>
         {isProtected ? (
           <Protected>{pageContent}</Protected>
         ) : redirectIfDoneAuth ? (
@@ -39,28 +38,9 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         ) : (
           pageContent
         )}
-      </>
+      </AppProvider>
     </>
   );
 }
-
-// App.getInitialProps = async ({ Component, ctx }: any) => {
-//   let pageProps = { profile: {} };
-//   let { token } = parseCookies(ctx);
-
-//   if (!token) {
-//     destroyCookie(ctx, "token");
-//   } else {
-//     const res = await axios.get(`${process.env.API_SOURCE}/profiles`, {
-//       withCredentials: true,
-//       headers: { Cookie: `token=${token}` },
-//     });
-//     pageProps.profile = await res.data?.data;
-//     if (Component.getServerSideProps) {
-//       pageProps = await Component.getServerSideProps(ctx);
-//     }
-//   }
-//   return { pageProps };
-// };
 
 export default App;
